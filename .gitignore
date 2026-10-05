@@ -1,0 +1,11 @@
+dockhand/.env
+
+*.local.env
+secrets.env
+*.key
+*.pem
+
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
