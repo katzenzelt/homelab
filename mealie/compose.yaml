@@ -1,0 +1,34 @@
+services:
+  mealie:
+    # https://github.com/mealie-recipes/mealie
+    image: ghcr.io/mealie-recipes/mealie:v3.19.2
+    container_name: mealie
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 1000M
+    ports:
+      - 9000:9000
+    volumes:
+      - ${MEALIE_DATA_PATH:?}:/app/data/
+    environment:
+      - ALLOW_SIGNUP=false
+      - TZ=Europe/Berlin
+      - BASE_URL=${MEALIE_DOMAIN:?}
+      - ALLOW_PASSWORD_LOGIN=false
+      - OIDC_AUTH_ENABLED=true
+      - OIDC_AUTO_REDIRECT=true
+      - OIDC_REMEMBER_ME=true
+      - OIDC_PROVIDER_NAME=${OIDC_PROVIDER_NAME:?}
+      - OIDC_CLIENT_ID=${OIDC_CLIENT_ID:?}
+      - OIDC_CLIENT_SECRET=${OIDC_CLIENT_SECRET:?}
+      - OIDC_CONFIGURATION_URL=${OIDC_DISCOVERY_URL:?}
+      - OIDC_ADMIN_GROUP=${OIDC_ADMIN_GROUP:?}
+      - SMTP_HOST=${SMTP_HOST:?}
+      - SMTP_PORT=${SMTP_PORT:?}
+      - SMTP_FROM_NAME=${SMTP_FROM_NAME:?}
+      - SMTP_AUTH_STRATEGY=${SMTP_AUTH_STRATEGY:?}
+      - SMTP_FROM_EMAIL=${SMTP_FROM_EMAIL:?}
+      - SMTP_USER=${SMTP_USER:?}
+      - SMTP_PASSWORD=${SMTP_PASSWORD:?}
