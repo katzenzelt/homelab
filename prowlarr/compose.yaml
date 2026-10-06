@@ -1,0 +1,18 @@
+services:
+  prowlarr:
+    # https://github.com/Prowlarr/Prowlarr / https://github.com/linuxserver/docker-prowlarr/pkgs/container/prowlarr
+    image: ghcr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    restart: unless-stopped
+    networks:
+      - media-tier
+    ports:
+      - 9696:9696
+    volumes:
+      - ${PROWLARR_DATA_PATH}/config:/config
+    environment:
+      - TZ=Europe/Berlin
+
+networks:
+  media-tier:
+    external: true
