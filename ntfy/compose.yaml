@@ -1,0 +1,22 @@
+services:
+  ntfy:
+    # https://github.com/binwiederhier/ntfy // https://hub.docker.com/r/binwiederhier/ntfy/
+    image: binwiederhier/ntfy:v2
+    container_name: ntfy
+    restart: unless-stopped
+    init: true
+    command:
+      - serve
+    ports:
+      - 8082:80
+    volumes:
+      - ${NTFY_CACHE_PATH:?}:/var/cache/ntfy
+      - ${NTFY_ETC_PATH:?}:/etc/ntfy
+    environment:
+      - TZ=Europe/Berlin
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --tries=1 http://localhost:80/v1/health -O - | grep -Eo '\"healthy\"\\s*:\\s*true' || exit 1"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
