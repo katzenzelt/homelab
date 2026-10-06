@@ -1,0 +1,10 @@
+services:
+  bentopdf:
+    # https://github.com/alam00000/bentopdf
+    image: ghcr.io/alam00000/bentopdf-simple:latest
+    container_name: bentopdf
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    environment:
+      - TZ=Europe/Berlin
