@@ -10,19 +10,19 @@ services:
     ports:
       - 8081:80
     volumes:
-      - ${FRESHRSS_DATA_PATH}:/var/www/FreshRSS/data
-      - ${FRESHRSS_EXTENSIONS_PATH}:/var/www/FreshRSS/extensions
+      - ${FRESHRSS_DATA_PATH:?}:/var/www/FreshRSS/data
+      - ${FRESHRSS_EXTENSIONS_PATH:?}:/var/www/FreshRSS/extensions
     environment:
       - TZ=Europe/Berlin
       - CRON_MIN=4,34
-      - TRUSTED_PROXY=${TRUSTED_PROXY}
+      - TRUSTED_PROXY=${TRUSTED_PROXY:?}
       - OIDC_ENABLED=1
-      - OIDC_PROVIDER_METADATA_URL=${OIDC_DISCOVERY_URL}
-      - OIDC_CLIENT_ID=${OIDC_CLIENT_ID}
-      - OIDC_CLIENT_SECRET=${OIDC_CLIENT_SECRET}
-      - OIDC_SCOPES=${OIDC_SCOPES}
-      - OIDC_X_FORWARDED_HEADERS=${OIDC_X_FORWARDED_HEADERS}
-      - OIDC_REMOTE_USER_CLAIM=${OIDC_REMOTE_USER_CLAIM}
+      - OIDC_PROVIDER_METADATA_URL=${OIDC_DISCOVERY_URL:?}
+      - OIDC_CLIENT_ID=${OIDC_CLIENT_ID:?}
+      - OIDC_CLIENT_SECRET=${OIDC_CLIENT_SECRET:?}
+      - OIDC_SCOPES=${OIDC_SCOPES:?}
+      - OIDC_X_FORWARDED_HEADERS=${OIDC_X_FORWARDED_HEADERS:?}
+      - OIDC_REMOTE_USER_CLAIM=${OIDC_REMOTE_USER_CLAIM:?}
     healthcheck:
       test: ["CMD", "cli/health.php"]
       timeout: 10s
