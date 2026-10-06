@@ -1,0 +1,13 @@
+services:
+  youtrack:
+    # https://hub.docker.com/r/jetbrains/youtrack/
+    image: jetbrains/youtrack:2026.2.19562
+    container_name: youtrack
+    restart: unless-stopped
+    ports:
+      - 8086:8080
+    volumes:
+      - ${YOUTRACK_DATA_PATH:?}/data:/opt/youtrack/data
+      - ${YOUTRACK_DATA_PATH:?}/conf:/opt/youtrack/conf
+      - ${YOUTRACK_DATA_PATH:?}/logs:/opt/youtrack/logs
+      - ${YOUTRACK_DATA_PATH:?}/backups:/opt/youtrack/backups
