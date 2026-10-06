@@ -1,0 +1,13 @@
+services:
+  navidrome:
+    # https://github.com/navidrome/navidrome
+    image: ghcr.io/navidrome/navidrome:latest
+    container_name: navidrome
+    restart: unless-stopped
+    ports:
+      - 4533:4533
+    volumes:
+      - ${NAVIDROME_DATA_PATH}:/data
+      - ${NAVIDROME_MEDIA_PATH}:/music:ro
+    environment:
+      - ND_BASEURL=${NAVIDROME_DOMAIN}
