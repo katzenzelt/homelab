@@ -26,8 +26,8 @@ services:
       PAPERLESS_ALLOWED_HOSTS: ${PAPERLESS_DOMAIN:?}
       PAPERLESS_OCR_LANGUAGE: deu+eng
       PAPERLESS_TIME_ZONE: Europe/Berlin
-      PAPERLESS_APPS: allauth.socialaccount.providers.openid_connect
-      PAPERLESS_SOCIALACCOUNT_PROVIDERS: ${PAPERLESS_SOCIALACCOUNT_PROVIDERS:?}
+      #PAPERLESS_APPS: allauth.socialaccount.providers.openid_connect
+      #PAPERLESS_SOCIALACCOUNT_PROVIDERS: ${PAPERLESS_SOCIALACCOUNT_PROVIDERS:?}
   
   paperless-broker:
     # https://hub.docker.com/r/valkey/valkey
