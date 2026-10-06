@@ -1,0 +1,24 @@
+services:
+  jellyfin:
+    # https://github.com/jellyfin/jellyfin
+    image: ghcr.io/jellyfin/jellyfin:12
+    container_name: jellyfin
+    restart: unless-stopped
+    user: 911:911
+    devices:
+      - /dev/dri/renderD128:/dev/dri/renderD128
+    networks:
+      - media-tier
+    ports:
+      - 8096:8096
+    volumes:
+      - ${JELLYFIN_CONFIG_PATH:?}:/config
+      - ${JELLYFIN_CACHE_PATH:?}:/cache
+      - ${JELLYFIN_MEDIA_PATH:?}:/data
+    environment:
+      - TZ=Europe/Berlin
+      - JELLYFIN_PublishedServerUrl=${JELLYFIN_DOMAIN:?}
+
+networks:
+  media-tier:
+    external: true
