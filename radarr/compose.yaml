@@ -1,0 +1,19 @@
+services:
+  radarr:
+    # https://github.com/Radarr/Radarr // https://github.com/linuxserver/docker-radarr/pkgs/container/radarr
+    image: ghcr.io/linuxserver/radarr:latest
+    container_name: radarr
+    restart: unless-stopped
+    networks:
+      - media-tier
+    ports:
+      - 7878:7878
+    volumes:
+      - ${RADARR_DATA_PATH}/config:/config
+      - ${RADARR_MEDIA_PATH}:/data
+    environment:
+      - TZ=Europe/Berlin
+
+networks:
+  media-tier:
+    external: true
