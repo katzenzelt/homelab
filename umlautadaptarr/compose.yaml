@@ -1,0 +1,22 @@
+services:
+  umlautadaptarr:
+    # https://github.com/PCJones/UmlautAdaptarr
+    image: pcjones/umlautadaptarr:latest
+    container_name: umlautadaptarr
+    restart: unless-stopped
+    networks:
+      - media-tier
+    environment:
+      - TZ=Europe/Berlin
+      # Radarr
+      - RADARR__0__ENABLED=true
+      - RADARR__0__HOST=http://radarr:7878
+      - RADARR__0__APIKEY=${RADARR_API_KEY:?}
+      # Sonarr
+      - SONARR__0__ENABLED=true
+      - SONARR__0__HOST=http://sonarr:8989
+      - SONARR__0__APIKEY=${SONARR_API_KEY:?}
+
+networks:
+  media-tier:
+    external: true
