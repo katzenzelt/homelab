@@ -1,0 +1,19 @@
+services:
+  sabnzbd:
+    # https://github.com/sabnzbd/sabnzbd // https://github.com/linuxserver/docker-sabnzbd/pkgs/container/sabnzbd
+    image: ghcr.io/linuxserver/sabnzbd:latest
+    container_name: sabnzbd
+    restart: unless-stopped
+    networks:
+      - media-tier
+    ports:
+      - 8083:8080
+    volumes:
+      - ${SABNZBD_DATA_PATH}/config:/config
+      - ${SABNZBD_MEDIA_PATH}:/data
+    environment:
+      - TZ=Europe/Berlin
+
+networks:
+  media-tier:
+    external: true
