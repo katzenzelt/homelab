@@ -1,0 +1,14 @@
+services:
+  newt:
+    # https://github.com/fosrl/newt
+    image: ghcr.io/fosrl/newt:1
+    container_name: newt
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    environment:
+      - PANGOLIN_ENDPOINT=${PANGOLIN_URL}
+      - NEWT_ID=${NEWT_ID}
+      - NEWT_SECRET=${NEWT_SECRET}
+      - ACCEPT_CLIENTS=true
