@@ -1,0 +1,19 @@
+services:
+  maintainerr:
+    # https://github.com/maintainerr/maintainerr
+    image: ghcr.io/maintainerr/maintainerr:3
+    container_name: maintainerr
+    restart: unless-stopped
+    user: 911:911
+    networks:
+      - media-tier
+    ports:
+      - 6246:6246
+    volumes:
+      - ${MAINTAINERR_PATH:?}:/opt/data
+    environment:
+      - TZ=Europe/Berlin
+
+networks:
+  media-tier:
+    external: true
