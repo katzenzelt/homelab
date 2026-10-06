@@ -1,0 +1,35 @@
+services:
+  shelfmark:
+    # https://github.com/calibrain/shelfmark
+    image: ghcr.io/calibrain/shelfmark:latest
+    container_name: shelfmark
+    restart: unless-stopped
+    networks:
+      - media-tier
+    ports:
+      - 8084:8084
+    volumes:
+      - ${SHELFMARK_DATA_PATH:?}/config:/config
+      - ${SHELFMARK_MEDIA_PATH:?}/ebooks:/books
+      - ${SHELFMARK_MEDIA_PATH:?}/audiobooks:/audiobooks
+      - ${SHELFMARK_MEDIA_PATH:?}/bookdrop:/bookdrop
+      - ${SHELFMARK_DOWNLOADS_PATH:?}:/data/downloads/complete
+    environment:
+      - TZ=Europe/Berlin
+      - AUTH_METHOD=oidc
+      - OIDC_DISCOVERY_URL=${OIDC_DISCOVERY_URL:?}
+      - OIDC_CLIENT_ID=${OIDC_CLIENT_ID:?}
+      - OIDC_CLIENT_SECRET=${OIDC_CLIENT_SECRET:?}
+      - OIDC_ADMIN_GROUP=${OIDC_ADMIN_GROUP:?}
+      - OIDC_BUTTON_LABEL=${OIDC_BUTTON_LABEL:?}
+      - HIDE_LOCAL_AUTH=true
+      - OIDC_AUTO_REDIRECT=false
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:8084/api/health"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+
+networks:
+  media-tier:
+    external: true
