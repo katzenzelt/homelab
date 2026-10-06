@@ -1,0 +1,18 @@
+services:
+  seerr:
+    # https://github.com/seerr-team/seerr
+    image: ghcr.io/seerr-team/seerr:v3
+    container_name: seerr
+    restart: unless-stopped
+    networks:
+      - media-tier
+    ports:
+      - 5055:5055
+    volumes:
+      - ${SEERR_DATA_PATH}/config:/app/config
+    environment:
+      - TZ=Europe/Berlin
+
+networks:
+  media-tier:
+    external: true
