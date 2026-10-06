@@ -1,0 +1,19 @@
+services:
+  sonarr:
+    # https://github.com/Sonarr/Sonarr // https://github.com/linuxserver/docker-sonarr/pkgs/container/sonarr
+    image: ghcr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    restart: unless-stopped
+    networks:
+      - media-tier
+    ports:
+      - 8989:8989
+    volumes:
+      - ${SONARR_DATA_PATH:?}/config:/config
+      - ${SONARR_MEDIA_PATH:?}:/data
+    environment:
+      - TZ=Europe/Berlin
+
+networks:
+  media-tier:
+    external: true
