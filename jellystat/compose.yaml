@@ -1,0 +1,41 @@
+services:
+  jellystat:
+    # https://github.com/CyferShepard/Jellystat
+    image: ghcr.io/cyfershepard/jellystat:latest
+    container_name: jellystat
+    restart: unless-stopped
+    depends_on:
+      - jellystat-db
+    networks:
+      - media-tier
+      - internal
+    ports:
+      - 3001:3000
+    volumes:
+      - ${JELLYSTAT_BACKUP_PATH:?}:/app/backend/backup-data
+    environment:
+      - POSTGRES_USER=jellystat
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?}
+      - POSTGRES_IP=jellystat-db
+      - POSTGRES_PORT=5432
+      - JWT_SECRET=${JWT_SECRET:?}
+      - TZ=Europe/Berlin
+
+  jellystat-db:
+    image: postgres:15
+    container_name: jellystat-db
+    restart: unless-stopped
+    shm_size: 1gb
+    networks:
+      - internal
+    volumes:
+      - ${JELLYSTAT_POSTGRES_PATH:?}:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=jellystat
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?}
+
+networks:
+  media-tier:
+    external: true
+  internal:
+    internal: true
