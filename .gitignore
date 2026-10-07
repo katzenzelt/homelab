@@ -1,4 +1,4 @@
-dockhand/.env
+lynx/dockhand/.env
 
 *.local.env
 secrets.env
