@@ -1,0 +1,61 @@
+services:
+  dockhand:
+    # https://github.com/Finsys/dockhand
+    image: fnsys/dockhand:latest
+    container_name: dockhand
+    restart: unless-stopped
+    user: 911:911
+    group_add:
+      - "996"
+      - "1000"
+    networks:
+      - socket-proxy
+      - default
+    ports:
+      - 3002:3000
+    volumes:
+      - ${DOCKHAND_APPDATA_PATH:?}/data:/app/data
+      - ${DOCKHAND_APPDATA_PATH:?}:/appdata
+    labels:
+      - "dockhand.adopt=false"
+
+  socket-proxy:
+    # https://github.com/Tecnativa/docker-socket-proxy
+    image: ghcr.io/tecnativa/docker-socket-proxy:latest
+    container_name: socket-proxy
+    restart: unless-stopped
+    networks:
+      - socket-proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      # Required for Dockhand core functionality
+      - CONTAINERS=1
+      - IMAGES=1
+      - NETWORKS=1
+      - VOLUMES=1
+      - EVENTS=1
+      - POST=1
+      - DELETE=1
+      # Required for dashboard host info and disk usage
+      - INFO=1
+      - SYSTEM=1
+      # Required for vulnerability scanning
+      - ALLOW_START=1
+      - ALLOW_STOP=1
+      - ALLOW_RESTARTS=1
+      # Required to view container logs, AND for vulnerability scanning:
+      # Dockhand reads the scanner container's output through the logs API
+      - ALLOW_LOGS=1
+      # Optional: enable for the container terminal, volume browsing,
+      # and the in-container file browser (all use the Docker exec API)
+      # - EXEC=1
+      # Optional: enable if you use Backups behind the proxy (the backup
+      # helper streams files via the archive API)
+      # - ALLOW_ARCHIVE=1
+    labels:
+      - "dockhand.adopt=false"
+
+networks:
+  socket-proxy:
+    internal: true
