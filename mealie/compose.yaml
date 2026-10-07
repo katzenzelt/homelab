@@ -11,7 +11,7 @@ services:
     ports:
       - 9000:9000
     volumes:
-      - ${MEALIE_DATA_PATH:?}:/app/data/
+      - ${MEALIE_APPDATA_PATH:?}/data:/app/data/
     environment:
       - ALLOW_SIGNUP=false
       - TZ=Europe/Berlin

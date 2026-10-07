@@ -9,11 +9,11 @@ services:
     ports:
       - 8084:8084
     volumes:
-      - ${SHELFMARK_DATA_PATH:?}/config:/config
-      - ${SHELFMARK_MEDIA_PATH:?}/ebooks:/books
-      - ${SHELFMARK_MEDIA_PATH:?}/audiobooks:/audiobooks
-      - ${SHELFMARK_MEDIA_PATH:?}/bookdrop:/bookdrop
-      - ${SHELFMARK_DOWNLOADS_PATH:?}:/data/downloads/complete
+      - ${SHELFMARK_APPDATA_PATH:?}/config:/config
+      - ${BOOKS_PATH:?}/ebooks:/books
+      - ${BOOKS_PATH:?}/audiobooks:/audiobooks
+      - ${BOOKS_PATH:?}/bookdrop:/bookdrop
+      - ${DOWNLOADS_PATH:?}/complete:/data/downloads/complete
     environment:
       - TZ=Europe/Berlin
       - AUTH_METHOD=oidc

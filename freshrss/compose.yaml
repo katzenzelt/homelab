@@ -10,8 +10,8 @@ services:
     ports:
       - 8081:80
     volumes:
-      - ${FRESHRSS_DATA_PATH:?}:/var/www/FreshRSS/data
-      - ${FRESHRSS_EXTENSIONS_PATH:?}:/var/www/FreshRSS/extensions
+      - ${FRESHRSS_APPDATA_PATH:?}/data:/var/www/FreshRSS/data
+      - ${FRESHRSS_APPDATA_PATH:?}/extensions:/var/www/FreshRSS/extensions
     environment:
       - TZ=Europe/Berlin
       - CRON_MIN=4,34

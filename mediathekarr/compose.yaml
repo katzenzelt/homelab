@@ -7,10 +7,10 @@ services:
     networks:
       - media-tier
     volumes:
-      - ${MEDIATHEKARR_DOWNLOADS_PATH:?}/incomplete:/app/downloads
+      - ${DOWNLOADS_PATH:?}/incomplete:/app/downloads
     environment:
       - TZ=Europe/Berlin
-      - DOWNLOAD_FOLDER_PATH_MAPPING=${MEDIATHEKARR_DOWNLOADS_PATH:?}/complete
+      - DOWNLOAD_FOLDER_PATH_MAPPING=${DOWNLOADS_PATH:?}/complete
 
 networks:
   media-tier:

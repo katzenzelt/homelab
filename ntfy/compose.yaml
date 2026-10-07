@@ -10,8 +10,8 @@ services:
     ports:
       - 8082:80
     volumes:
-      - ${NTFY_CACHE_PATH:?}:/var/cache/ntfy
-      - ${NTFY_ETC_PATH:?}:/etc/ntfy
+      - ${NTFY_APPDATA_PATH:?}/cache:/var/cache/ntfy
+      - ${NTFY_APPDATA_PATH:?}/etc:/etc/ntfy
     environment:
       - TZ=Europe/Berlin
     healthcheck:

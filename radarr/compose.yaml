@@ -9,8 +9,8 @@ services:
     ports:
       - 7878:7878
     volumes:
-      - ${RADARR_DATA_PATH:?}/config:/config
-      - ${RADARR_MEDIA_PATH:?}:/data
+      - ${RADARR_APPDATA_PATH:?}/config:/config
+      - ${MEDIA_PATH:?}:/media
     environment:
       - TZ=Europe/Berlin
 

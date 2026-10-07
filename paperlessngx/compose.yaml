@@ -11,10 +11,10 @@ services:
     ports:
       - 8000:8000
     volumes:
-      - ${PAPERLESS_DATA_PATH:?}/data:/usr/src/paperless/data
-      - ${PAPERLESS_MEDIA_PATH:?}/media:/usr/src/paperless/media
-      - ${PAPERLESS_MEDIA_PATH:?}/export:/usr/src/paperless/export
-      - ${PAPERLESS_MEDIA_PATH:?}/consume:/usr/src/paperless/consume
+      - ${PAPERLESS_APPDATA_PATH:?}/data:/usr/src/paperless/data
+      - ${DOCUMENTS_PATH:?}/media:/usr/src/paperless/media
+      - ${DOCUMENTS_PATH:?}/export:/usr/src/paperless/export
+      - ${DOCUMENTS_PATH:?}/consume:/usr/src/paperless/consume
     environment:
       PAPERLESS_REDIS: redis://paperless-broker:6379
       PAPERLESS_DBENGINE: sqlite
@@ -35,7 +35,7 @@ services:
     container_name: paperless-broker
     restart: unless-stopped
     volumes:
-      - ${PAPERLESS_DATA_PATH:?}/valkey:/data
+      - ${PAPERLESS_APPDATA_PATH:?}/valkey:/data
   
   paperless-gotenberg:
     # https://hub.docker.com/r/gotenberg/gotenberg

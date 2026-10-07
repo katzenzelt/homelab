@@ -9,7 +9,7 @@ services:
     ports:
       - 5055:5055
     volumes:
-      - ${SEERR_DATA_PATH:?}/config:/app/config
+      - ${SEERR_APPDATA_PATH:?}/config:/app/config
     environment:
       - TZ=Europe/Berlin
 

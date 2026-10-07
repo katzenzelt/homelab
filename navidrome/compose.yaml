@@ -7,7 +7,7 @@ services:
     ports:
       - 4533:4533
     volumes:
-      - ${NAVIDROME_DATA_PATH:?}:/data
-      - ${NAVIDROME_MEDIA_PATH:?}:/music:ro
+      - ${NAVIDROME_APPDATA_PATH:?}/data:/data
+      - ${MUSIC_PATH:?}:/music:ro
     environment:
       - ND_BASEURL=${NAVIDROME_DOMAIN:?}

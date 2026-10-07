@@ -7,7 +7,7 @@ services:
     ports:
       - 8086:8080
     volumes:
-      - ${YOUTRACK_DATA_PATH:?}/data:/opt/youtrack/data
-      - ${YOUTRACK_DATA_PATH:?}/conf:/opt/youtrack/conf
-      - ${YOUTRACK_DATA_PATH:?}/logs:/opt/youtrack/logs
-      - ${YOUTRACK_DATA_PATH:?}/backups:/opt/youtrack/backups
+      - ${YOUTRACK_APPDATA_PATH:?}/data:/opt/youtrack/data
+      - ${YOUTRACK_APPDATA_PATH:?}/conf:/opt/youtrack/conf
+      - ${YOUTRACK_APPDATA_PATH:?}/logs:/opt/youtrack/logs
+      - ${YOUTRACK_APPDATA_PATH:?}/backups:/opt/youtrack/backups

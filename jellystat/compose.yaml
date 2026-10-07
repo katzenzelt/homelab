@@ -12,7 +12,7 @@ services:
     ports:
       - 3001:3000
     volumes:
-      - ${JELLYSTAT_BACKUP_PATH:?}:/app/backend/backup-data
+      - ${JELLYSTAT_APPDATA_PATH:?}/backup:/app/backend/backup-data
     environment:
       - POSTGRES_USER=jellystat
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?}
@@ -29,7 +29,7 @@ services:
     networks:
       - internal
     volumes:
-      - ${JELLYSTAT_POSTGRES_PATH:?}:/var/lib/postgresql/data
+      - ${JELLYSTAT_APPDATA_PATH:?}/postgres:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=jellystat
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?}

@@ -9,8 +9,8 @@ services:
     ports:
       - 8083:8080
     volumes:
-      - ${SABNZBD_DATA_PATH:?}/config:/config
-      - ${SABNZBD_MEDIA_PATH:?}:/data
+      - ${SABNZBD_APPDATA_PATH:?}/config:/config
+      - ${MEDIA_PATH:?}:/data
     environment:
       - TZ=Europe/Berlin
 
