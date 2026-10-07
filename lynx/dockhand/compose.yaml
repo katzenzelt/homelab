@@ -15,7 +15,7 @@ services:
       - 3002:3000
     volumes:
       - ${DOCKHAND_APPDATA_PATH:?}/data:/app/data
-      - ${DOCKHAND_APPDATA_PATH:?}:/appdata
+      - ${APPDATA_PATH:?}:/appdata
     labels:
       - "dockhand.adopt=false"
 
