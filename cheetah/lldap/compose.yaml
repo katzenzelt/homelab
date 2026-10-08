@@ -7,6 +7,8 @@ services:
     user: 911:911
     networks:
       - pangolin
+    ports:
+      - "3890:3890"
     volumes:
       - ${LLDAP_APPDATA_PATH:?}/config:/data
     environment:
