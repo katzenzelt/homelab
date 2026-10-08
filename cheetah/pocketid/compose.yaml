@@ -1,0 +1,26 @@
+services:
+  pocketid:
+    # https://github.com/pocket-id/pocket-id
+    image: ghcr.io/pocket-id/pocket-id:v2-distroless
+    container_name: pocketid
+    restart: unless-stopped
+    user: 911:911
+    env_file: .env
+    networks:
+      - pangolin
+    volumes:
+      - ${POCKETID_APPDATA_PATH:?}/config:/app/data
+    environment:
+      - TRUST_PROXY=true
+      - APP_URL=${POCKETID_URL:?}
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY:?}
+    healthcheck:
+      test: [ "CMD", "/app/pocket-id", "healthcheck" ]
+      interval: 1m30s
+      timeout: 5s
+      retries: 2
+      start_period: 10s
+
+networks:
+  pangolin:
+    external: true
