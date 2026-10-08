@@ -1,59 +1,66 @@
 services:
   web:
-    # image: ghcr.io/calagopus/panel:nightly-heavy # if you want to live on the edge
+    # https://github.com/calagopus/panel
     image: ghcr.io/calagopus/panel:heavy
+    container_name: calagopus-panel
     restart: unless-stopped
-    stop_grace_period: 40s # the panel's shutdown handlers need longer than docker's 10s default
-    environment:
-      - TZ=Europe/Berlin
-      - REDIS_URL=redis://cache
-      - DATABASE_URL=postgresql://panel:panel@db/panel
-      - DATABASE_MIGRATE=true
-      - PORT=8000
-      - APP_DEBUG=false
-      - APP_LOG_DIRECTORY=/var/log/calagopus
-      - APP_PRIMARY=true # sets whether this panel instance is responsible for running background tasks (e.g. cleanup)
-      - APP_ENABLE_WINGS_PROXY=true # enables the wings proxy feature, allowing the panel to proxy user requests to wings nodes, simplifies home network setups, not recommended for many nodes or high traffic setups
-      - APP_ENCRYPTION_KEY=CHANGEME
-      - APP_USE_DECRYPTION_CACHE=true # caches decrypted values in memory and redis to improve performance, can be considered less secure
-      - APP_USE_INTERNAL_CACHE=true # caches short-lived values in app memory and redis instead of just redis, improves performance at the cost of higher memory usage
-      - APP_DISABLE_EXTENSION_MANAGEMENT=false # disables installing, removing and rebuilding extensions through the web interface in the heavy image, the cli still works
+    stop_grace_period: 40s
+    depends_on:
+      - db
+      - cache
     dns:
       - 1.1.1.1
       - 8.8.8.8
       - 9.9.9.9
+    networks:
+      - pangolin
+      - default
     volumes:
-      - ./data:/var/lib/calagopus
-      - ./logs:/var/log/calagopus
-      - ./build/binaries:/app/binaries
-      - ./build/translations:/app/translations
-      - ./build/extensions:/app/extensions
-      - ./build/extension-migrations:/app/repo/database/extension-migrations
-    ports:
-      - 8000:8000
-    extra_hosts: # mainly useful when importing from a standalone installation, can be omitted otherwise
-      - "host.docker.internal:host-gateway"
-    depends_on:
-      - db
-      - cache
+      - ${CALAGOPUS_PANEL_APPDATA_PATH:?}/data:/var/lib/calagopus
+      - ${CALAGOPUS_PANEL_APPDATA_PATH:?}/logs:/var/log/calagopus
+      - ${CALAGOPUS_PANEL_APPDATA_PATH:?}/build/binaries:/app/binaries
+      - ${CALAGOPUS_PANEL_APPDATA_PATH:?}/build/translations:/app/translations
+      - ${CALAGOPUS_PANEL_APPDATA_PATH:?}/build/extensions:/app/extensions
+      - ${CALAGOPUS_PANEL_APPDATA_PATH:?}/build/extension-migrations:/app/repo/database/extension-migrations
+    environment:
+      - TZ=Europe/Berlin
+      - REDIS_URL=redis://cache
+      - DATABASE_URL=postgresql://panel:${POSTGRES_PASSWORD:?}@db/panel
+      - DATABASE_MIGRATE=true
+      - PORT=8000
+      - APP_DEBUG=false
+      - APP_LOG_DIRECTORY=/var/log/calagopus
+      - APP_PRIMARY=true
+      - APP_ENABLE_WINGS_PROXY=true
+      - APP_ENCRYPTION_KEY=${APP_ENCRYPTION_KEY:?}
+      - APP_USE_DECRYPTION_CACHE=true
+      - APP_USE_INTERNAL_CACHE=true
+      - APP_DISABLE_EXTENSION_MANAGEMENT=false
+      - APP_TRUSTED_PROXIES=${APP_TRUSTED_PROXIES:?}
 
   db:
     image: ghcr.io/calagopus/pgautoupgrade:18-alpine
+    container_name: calagopus-db
     restart: unless-stopped
     environment:
       - TZ=Europe/Berlin
       - POSTGRES_USER=panel
-      - POSTGRES_PASSWORD=panel
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?}
       - POSTGRES_DB=panel
       - PGDATA=/data
     volumes:
-      - ./postgres:/data
+      - ${CALAGOPUS_PANEL_APPDATA_PATH:?}/postgres:/data
 
   cache:
     image: ghcr.io/calagopus/valkey:latest
+    container_name: calagopus-redis
     restart: unless-stopped
     command: --protected-mode no --save 60 1
     environment:
       TZ: Europe/Berlin
     volumes:
-      - ./cache:/data
+      - ${CALAGOPUS_PANEL_APPDATA_PATH:?}/cache:/data
+
+networks:
+  pangolin:
+    external: true
