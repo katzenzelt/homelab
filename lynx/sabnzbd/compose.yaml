@@ -10,7 +10,7 @@ services:
       - 8083:8080
     volumes:
       - ${SABNZBD_APPDATA_PATH:?}/config:/config
-      - ${MEDIA_PATH:?}:/data
+      - ${MEDIA_PATH:?}:/media
     environment:
       - TZ=Europe/Berlin
 
