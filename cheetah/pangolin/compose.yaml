@@ -1,0 +1,68 @@
+name: pangolin
+services:
+  pangolin:
+    # https://github.com/fosrl/pangolin
+    image: ghcr.io/fosrl/pangolin:1
+    container_name: pangolin
+    restart: unless-stopped
+    networks:
+      - pangolin
+    volumes:
+      - ${PANGOLIN_APPDATA_PATH:?}/config:/app/config
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/api/v1/"]
+      interval: "10s"
+      timeout: "10s"
+      retries: 15
+
+  gerbil:
+    # https://github.com/fosrl/gerbil
+    image: ghcr.io/fosrl/gerbil:latest
+    container_name: gerbil
+    restart: unless-stopped
+    depends_on:
+      pangolin:
+        condition: service_healthy
+    command:
+      - --reachableAt=http://gerbil:3004
+      - --generateAndSaveKeyTo=/var/config/key
+      - --remoteConfig=http://pangolin:3001/api/v1/
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    networks:
+      - pangolin
+    ports:
+      - "80:80/tcp"
+      - "443:443/tcp"
+      - "21820:21820/udp"
+      - "51820:51820/udp"
+      # Calagopus Ports
+      - "${CALAGOPUS_SFTP_PORT:?}:${CALAGOPUS_SFTP_PORT:?}/tcp"
+      - "${CALAGOPUS_GAME_PORTS:?}:${CALAGOPUS_GAME_PORTS:?}/tcp"
+      - "${CALAGOPUS_VOICE_PORTS:?}:${CALAGOPUS_VOICE_PORTS:?}/udp"
+      # Pelican Ports
+      - "${PELICAN_GAME_PORTS:?}:${PELICAN_GAME_PORTS:?}/tcp"
+      - "${PELICAN_VOICE_PORTS:?}:${PELICAN_VOICE_PORTS:?}/udp"
+    volumes:
+      - ${PANGOLIN_APPDATA_PATH:?}/config/:/var/config
+
+  traefik:
+    # https://github.com/traefik/traefik
+    image: traefik:v3.7
+    container_name: traefik
+    restart: unless-stopped
+    depends_on:
+      pangolin:
+        condition: service_healthy
+    command:
+      - --configFile=/etc/traefik/traefik_config.yml
+    network_mode: service:gerbil
+    volumes:
+      - ${PANGOLIN_APPDATA_PATH:?}/config/traefik:/etc/traefik:ro
+      - ${PANGOLIN_APPDATA_PATH:?}/config/letsencrypt:/letsencrypt
+      - ${PANGOLIN_APPDATA_PATH:?}/config/traefik/logs:/var/log/traefik
+
+networks:
+  pangolin:
+    external: true
