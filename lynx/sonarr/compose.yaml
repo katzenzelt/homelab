@@ -10,7 +10,7 @@ services:
       - 8989:8989
     volumes:
       - ${SONARR_APPDATA_PATH:?}/config:/config
-      - ${MEDIA_PATH:?}:/media
+      - ${MEDIA_PATH:?}:/srv/media
     environment:
       - TZ=Europe/Berlin
 

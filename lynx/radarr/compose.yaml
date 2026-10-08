@@ -10,7 +10,7 @@ services:
       - 7878:7878
     volumes:
       - ${RADARR_APPDATA_PATH:?}/config:/config
-      - ${MEDIA_PATH:?}:/media
+      - ${MEDIA_PATH:?}:/srv/media
     environment:
       - TZ=Europe/Berlin
 
