@@ -13,7 +13,7 @@ services:
     volumes:
       - ${JELLYFIN_APPDATA_PATH:?}/config:/config
       - ${JELLYFIN_APPDATA_PATH:?}/cache:/cache
-      - ${MEDIA_PATH:?}:/media
+      - ${MEDIA_PATH:?}:/srv/media
     environment:
       - TZ=Europe/Berlin
       - JELLYFIN_PublishedServerUrl=${JELLYFIN_DOMAIN:?}
