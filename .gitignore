@@ -1,4 +1,5 @@
 lynx/dockhand/.env
+cheetah/hawser/.env
 
 *.local.env
 secrets.env
