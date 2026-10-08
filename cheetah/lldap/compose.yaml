@@ -1,0 +1,23 @@
+services:
+  lldap:
+    # https://github.com/lldap/lldap
+    image: ghcr.io/lldap/lldap:v0.6-alpine-rootless
+    container_name: lldap
+    restart: unless-stopped
+    user: 911:911
+    networks:
+      - pangolin
+    volumes:
+      - ${LLDAP_APPDATA_PATH:?}/config:/data
+    environment:
+      - PUID=911
+      - PGID=911
+      - TZ=Europe/Berlin
+      - LLDAP_JWT_SECRET=${LLDAP_JWT_SECRET:?}
+      - LLDAP_KEY_SEED=${LLDAP_KEY_SEED:?}
+      - LLDAP_KEY_FILE=''
+      - LLDAP_LDAP_BASE_DN=${LLDAP_LDAP_BASE_DN:?}
+
+networks:
+  pangolin:
+    external: true
