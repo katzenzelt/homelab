@@ -1,0 +1,29 @@
+services:
+  wings:
+    # https://github.com/calagopus/wings
+    image: ghcr.io/calagopus/wings:latest
+    container_name: calagopus-wings
+    restart: unless-stopped
+    dns:
+      - 1.1.1.1
+      - 1.0.0.1
+    ports:
+      - "8080:8080"
+      - "2023:2022"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "/var/lib/docker/containers/:/var/lib/docker/containers/"
+      - "${CALAGOPUS_WINGS_APPDATA_PATH:?}/config/:/etc/calagopus-wings/"
+      - "${CALAGOPUS_WINGS_APPDATA_PATH:?}/logs/:/var/log/calagopus-wings/"
+      - "${CALAGOPUS_WINGS_APPDATA_PATH:?}/diffs:/var/lib/calagopus-wings/diffs"
+      - "${CALAGOPUS_WINGS_APPDATA_PATH:?}/vmounts:/var/lib/calagopus-wings/vmounts"
+      - "${CALAGOPUS_WINGS_APPDATA_PATH:?}/archives:/var/lib/calagopus-wings/archives"
+      - "${CALAGOPUS_WINGS_APPDATA_PATH:?}/tmp:/var/lib/calagopus-wings/tmp"
+      - "${CALAGOPUS_WINGS_GAMES_PATH:?}/volumes:/var/lib/calagopus-wings/volumes"
+      - "${CALAGOPUS_WINGS_GAMES_PATH:?}/backups:/var/lib/calagopus-wings/backups"
+      - "/etc/ssl/certs/wings/:/etc/ssl/certs/wings/:ro"
+    environment:
+      - TZ=Europe/Berlin
+      - WINGS_UID=988
+      - WINGS_GID=988
+      - WINGS_USERNAME=calagopus
