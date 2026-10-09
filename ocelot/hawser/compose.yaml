@@ -8,7 +8,7 @@ services:
       - ${HAWSER_APPDATA_PATH:?}/data:/data
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      - DOCKHAND_SERVER_URL=ws://${DOCKHAND_TAILSCALE_IP:?}:3002/api/hawser/connect
+      - DOCKHAND_SERVER_URL=ws://${DOCKHAND_IP:?}:3002/api/hawser/connect
       - TOKEN=${HAWSER_TOKEN:?}
     labels:
       - "dockhand.adopt=false"
