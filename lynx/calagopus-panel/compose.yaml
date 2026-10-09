@@ -12,16 +12,15 @@ services:
       - 1.1.1.1
       - 8.8.8.8
       - 9.9.9.9
-    networks:
-      - pangolin
-      - default
+    ports:
+      - "8001:8000"
     volumes:
-      - ${CALAGOPUS_PANEL_APPDATA_PATH:?}/data:/var/lib/calagopus
-      - ${CALAGOPUS_PANEL_APPDATA_PATH:?}/logs:/var/log/calagopus
-      - ${CALAGOPUS_PANEL_APPDATA_PATH:?}/build/binaries:/app/binaries
-      - ${CALAGOPUS_PANEL_APPDATA_PATH:?}/build/translations:/app/translations
-      - ${CALAGOPUS_PANEL_APPDATA_PATH:?}/build/extensions:/app/extensions
-      - ${CALAGOPUS_PANEL_APPDATA_PATH:?}/build/extension-migrations:/app/repo/database/extension-migrations
+      - "${CALAGOPUS_PANEL_APPDATA_PATH:?}/data:/var/lib/calagopus"
+      - "${CALAGOPUS_PANEL_APPDATA_PATH:?}/logs:/var/log/calagopus"
+      - "${CALAGOPUS_PANEL_APPDATA_PATH:?}/build/binaries:/app/binaries"
+      - "${CALAGOPUS_PANEL_APPDATA_PATH:?}/build/translations:/app/translations"
+      - "${CALAGOPUS_PANEL_APPDATA_PATH:?}/build/extensions:/app/extensions"
+      - "${CALAGOPUS_PANEL_APPDATA_PATH:?}/build/extension-migrations:/app/repo/database/extension-migrations"
     environment:
       - TZ=Europe/Berlin
       - REDIS_URL=redis://cache
@@ -42,24 +41,24 @@ services:
     image: ghcr.io/calagopus/pgautoupgrade:18-alpine
     container_name: calagopus-db
     restart: unless-stopped
+    volumes:
+      - "${CALAGOPUS_PANEL_APPDATA_PATH:?}/postgres:/data"
     environment:
       - TZ=Europe/Berlin
       - POSTGRES_USER=panel
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?}
       - POSTGRES_DB=panel
       - PGDATA=/data
-    volumes:
-      - ${CALAGOPUS_PANEL_APPDATA_PATH:?}/postgres:/data
 
   cache:
     image: ghcr.io/calagopus/valkey:latest
     container_name: calagopus-redis
     restart: unless-stopped
     command: --protected-mode no --save 60 1
-    environment:
-      TZ: Europe/Berlin
     volumes:
-      - ${CALAGOPUS_PANEL_APPDATA_PATH:?}/cache:/data
+      - "${CALAGOPUS_PANEL_APPDATA_PATH:?}/cache:/data"
+    environment:
+      - TZ=Europe/Berlin
 
 networks:
   pangolin:
