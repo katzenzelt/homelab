@@ -2,7 +2,7 @@ services:
   outline:
     # https://github.com/outline/outline
     image: outlinewiki/outline:1.10
-    container_name: outline_server-wiki
+    container_name: outline-wiki_server
     restart: unless-stopped
     depends_on:
       postgres:
@@ -43,7 +43,7 @@ services:
 
   postgres:
     image: postgres:16-alpine
-    container_name: outline_postgres-wiki
+    container_name: outline-wiki_postgres
     restart: unless-stopped
     networks:
       - outline-wiki
@@ -61,7 +61,7 @@ services:
 
   redis:
     image: redis:7-alpine
-    container_name: outline_redis-wiki
+    container_name: outline-wiki_redis
     restart: unless-stopped
     command: ["redis-server", "/redis.conf"]
     networks:
