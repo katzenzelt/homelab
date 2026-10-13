@@ -1,0 +1,19 @@
+services:
+  backrest:
+    # https://github.com/garethgeorge/backrest
+    image: ghcr.io/garethgeorge/backrest:v1
+    container_name: backrest
+    restart: unless-stopped
+    ports:
+      - "9898:9898"
+    volumes:
+      - ${BACKREST_APPDATA_PATH:?}/data:/data
+      - ${BACKREST_APPDATA_PATH:?}/config:/config
+      - ${BACKREST_APPDATA_PATH:?}/.ssh:/root/.ssh
+      - ${APPDATA_PATH:?}:${APPDATA_PATH:?}:ro
+    environment:
+      - BACKREST_DATA=/data
+      - BACKREST_CONFIG=/config/config.json
+      - XDG_CACHE_HOME=/cache
+      - TMPDIR=/tmp
+      - TZ=Europe/Berlin
