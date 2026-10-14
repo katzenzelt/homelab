@@ -1,7 +1,7 @@
 services:
   outline:
     # https://github.com/outline/outline
-    image: outlinewiki/outline:1.10
+    image: outlinewiki/outline:1.11
     container_name: outline-dnd_server
     restart: unless-stopped
     depends_on:
