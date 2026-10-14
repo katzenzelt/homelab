@@ -1,7 +1,7 @@
 services:
   dockhand:
     # https://github.com/Finsys/dockhand
-    image: fnsys/dockhand:v1.0.51
+    image: fnsys/dockhand:v1.0.53
     container_name: dockhand
     restart: unless-stopped
     group_add:
