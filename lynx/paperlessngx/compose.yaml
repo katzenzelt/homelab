@@ -49,6 +49,6 @@ services:
 
   paperless-tika:
     # https://hub.docker.com/r/apache/tika
-    image: apache/tika:4.1.0
+    image: apache/tika:latest
     container_name: paperless-tika
     restart: unless-stopped
