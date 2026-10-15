@@ -9,8 +9,14 @@ services:
     volumes:
       - ${BACKREST_APPDATA_PATH:?}/data:/data
       - ${BACKREST_APPDATA_PATH:?}/config:/config
-      - ${BACKREST_APPDATA_PATH:?}/.ssh:/root/.ssh
+      - ${BACKREST_APPDATA_PATH:?}/cache:/cache
+      - ${BACKREST_APPDATA_PATH:?}/.ssh:/root/.ssh:ro
+      - ${BACKREST_APPDATA_PATH:?}/restore:/restore
       - ${APPDATA_PATH:?}:${APPDATA_PATH:?}:ro
+      - ${MEDIA_PATH:?}/books:${MEDIA_PATH:?}/books:ro
+      - ${MEDIA_PATH:?}/documents:${MEDIA_PATH:?}/documents:ro
+      - ${MEDIA_PATH:?}/music:${MEDIA_PATH:?}/music:ro
+      - ${MEDIA_PATH:?}/photos:${MEDIA_PATH:?}/photos:ro
     environment:
       - RESTIC_PASSWORD=${RESTIC_PASSWORD:?}
       - BACKREST_DATA=/data
