@@ -12,6 +12,7 @@ services:
       - ${BACKREST_APPDATA_PATH:?}/.ssh:/root/.ssh
       - ${APPDATA_PATH:?}:${APPDATA_PATH:?}:ro
     environment:
+      - RESTIC_PASSWORD=${RESTIC_PASSWORD:?}
       - BACKREST_DATA=/data
       - BACKREST_CONFIG=/config/config.json
       - XDG_CACHE_HOME=/cache
