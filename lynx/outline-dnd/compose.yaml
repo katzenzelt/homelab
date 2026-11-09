@@ -9,9 +9,8 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-    networks:
-      - outline-dnd
-      - pangolin
+    ports:
+      - 3003:3000
     volumes:
       - ${OUTLINE_DND_APPDATA_PATH:?}/config:/var/lib/outline/data
     environment:
@@ -45,8 +44,6 @@ services:
     image: postgres:16-alpine
     container_name: outline-dnd_postgres
     restart: unless-stopped
-    networks:
-      - outline-dnd
     volumes:
       - ${OUTLINE_DND_APPDATA_PATH:?}/postgres:/var/lib/postgresql/data
     environment:
@@ -64,8 +61,6 @@ services:
     container_name: outline-dnd_redis
     restart: unless-stopped
     command: ["redis-server", "/redis.conf"]
-    networks:
-      - outline-dnd
     volumes:
       - ${OUTLINE_DND_APPDATA_PATH:?}/redis.conf:/redis.conf
     healthcheck:
@@ -73,9 +68,3 @@ services:
       interval: 10s
       timeout: 30s
       retries: 3
-
-networks:
-  outline-dnd:
-    external: true
-  pangolin:
-    external: true
