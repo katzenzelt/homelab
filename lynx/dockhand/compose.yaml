@@ -19,7 +19,7 @@ services:
 
   socket-proxy:
     # https://github.com/Tecnativa/docker-socket-proxy
-    image: ghcr.io/tecnativa/docker-socket-proxy:v1.0.0
+    image: ghcr.io/tecnativa/docker-socket-proxy:lts
     container_name: socket-proxy
     restart: unless-stopped
     networks:
